@@ -20,7 +20,7 @@ const saveTodo = async (text, setText, setTodo) => {
 };
 const updateTodo = async (todoId, text, setTodo, setText, setIsUpdating) => {
   try {
-    await axios.patch(`${baseUrl}/update/${todoId}`, text).then((data) => {
+    await axios.patch(`${baseUrl}/update/${todoId}`, { text }).then((data) => {
       console.log(data);
       setIsUpdating(false);
       setText("");
@@ -30,4 +30,14 @@ const updateTodo = async (todoId, text, setTodo, setText, setIsUpdating) => {
     console.log(error);
   }
 };
-export { getAllTodos, saveTodo, updateTodo };
+const deleteTodo = async (todoId, setTodo) => {
+  try {
+    await axios.delete(`${baseUrl}/delete/${todoId}`).then((data) => {
+      console.log(data);
+      getAllTodos(setTodo);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+export { getAllTodos, saveTodo, updateTodo, deleteTodo };

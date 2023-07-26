@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Todo from "./components/Todo";
 import "./App.css";
-import { saveTodo, getAllTodos, updateTodo } from "./utils/HandleApi";
+import {
+  saveTodo,
+  getAllTodos,
+  updateTodo,
+  deleteTodo,
+} from "./utils/HandleApi";
 const App = () => {
   const [todo, setTodo] = useState([]);
   const [text, setText] = useState("");
@@ -10,6 +15,11 @@ const App = () => {
   useEffect(() => {
     getAllTodos(setTodo);
   }, []);
+  const updateMode = (_id, text) => {
+    setIsUpdating(true);
+    setText(text);
+    setTodoId(_id);
+  };
   return (
     <div className="App">
       <div className="container">
@@ -34,7 +44,12 @@ const App = () => {
         </div>
         <div className="list">
           {todo.map((item) => (
-            <Todo key={item._id} text={item.text} />
+            <Todo
+              key={item._id}
+              text={item.text}
+              updateMode={() => updateMode(item._id, item.text)}
+              deleteTodo={() => deleteTodo(item._id, setTodo)}
+            />
           ))}
         </div>
       </div>
